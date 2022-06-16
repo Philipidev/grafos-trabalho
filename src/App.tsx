@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { createContext } from 'react';
+import RequestUtils from './hooks/requestUtils';
+
+
+export interface IGrafosContext {
+
+}
+
+const GrafosContext = createContext<IGrafosContext>({} as IGrafosContext);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+	const onMount = () => {
+		console.log('onMount');
+		if (!RequestUtils.symplaApi) {
+			RequestUtils.setAuthToken();
+		}
+		RequestUtils.symplaApi.get(
+			'public/v3/events'
+		).then((response) => console.log(response.data));
+	}
+	useEffect(onMount, []);
+
+	const defaultValues: IGrafosContext = {
+	}
+
+	return (
+		<GrafosContext.Provider
+			value={defaultValues}
+		>
+			<div className="App">
+				oioioi
+			</div>
+		</GrafosContext.Provider>
+	);
 }
 
 export default App;
